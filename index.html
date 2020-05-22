@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>AWS Lambda</title>
+
+		<meta name="author" content="Ira Litvinchuk">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/moon.css" id="theme">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- If the query includes 'print-pdf', use the PDF print sheet -->
+		<script>
+			document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+        <section>
+          <h1>AWS Lambda</h1>
+          <h3>serverless compute</h3>
+          <p>
+              <small>Slides created by <a href="https://github.com/iralitv">Ira Litvinchuk</a></small>
+          </p>
+        </section>
+
+        <section>
+          <section>
+            <h1>Understanding serverless</h1>
+          </section>
+          <section>
+            <h3>Serverless application have 4 characteristics</h3>
+            <ul>
+              <li>No server management</li>
+              <li>Flexible scaling</li>
+              <li>No idle capacity</li>
+              <li>High availability</li>
+            </ul>
+          </section>
+        </section>
+
+        <!-- Example of nested vertical slides -->
+        <section>
+          <section>
+              <h1>AWS Lambda? WTF?</h1>
+          </section>
+          <section>
+            <h3>Lambda - a type of Function as a Service (FaaS)</h3>
+          </section>
+          <section>
+            <h3>Supported languages and runtimes</h3>
+            <ul>
+              <li>Node.js 12.13.0, 10.16.3 and 8.10</li>
+              <li>Python 3.8, 3.7, 3.6 and 2.7</li>
+              <li>Ruby 2.5</li>
+              <li>Java 11 and 8</li>
+              <li>.NET Core 2.1</li>
+              <li>Go 1x</li>
+            </ul>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>3 components comprise AWS Lambda</h2>
+            <ul>
+              <li>Function</li>
+              <li>Configuration</li>
+              <li>Event Source</li>
+            </ul>
+          </section>
+          <section>
+            <h2>Lambda Function</h2>
+            <p>
+              <span class="span-strong">Async-await</span> function:
+              <pre>
+                <code data-trim data-noescape>
+exports.handler = async(event, context) => {
+  console.log(`Event: ${JSON.stringify(event, null, 2)}`);
+  return context.logStreamName;
+}
+                </code>
+              </pre>
+            <span class="span-strong">Non-async</span> function:
+              <pre>
+                <code data-trim data-noescape>
+const https = require('https')
+let url = "https://docs.aws.amazon.com/lambda/latest/dg/welcome.html"
+
+exports.handler =  function(event, context, callback) {
+  https.get(url, (res) => {
+    callback(null, res.statusCode)
+  }).on('error', (e) => {
+    callback(Error(e))
+  })
+}
+                </code>
+              </pre>
+            </p>
+          </section>
+          <section>
+            <h2>Lambda configuration</h2>
+            <p>
+              You can use the Lambda console to configure function setting, add triggers and destinations, update and test your code.
+            </p>
+          </section>
+          <section>
+            <h2>Event Source</h2>
+            <ul>
+              <li><strong>Push</strong> which get triggered by other events such as API gateway</li>
+              <li><strong>Pull</strong> where the lambda function goes and poll an event source for new objects</li>
+            </ul>
+          </section>
+        </section>
+
+        <section>
+          <section>
+            <h2>Pricing</h2>
+            <ul>
+              <li>
+                Free tier available!
+                <ul>
+                  <li>1M requests</li>
+                  <li>3M seconds of compute time</li>
+                </ul>
+              </li>
+              <li><p>No usage = no costs!</p></li>
+            </ul>
+          </section>
+        </section>
+
+        <section>
+          <h2>Thanks for attention</h2>
+        </section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+		<script>
+            window.onload = function(){
+              lineDraw();
+              setInterval(lineDraw, 5000);
+
+            };
+            function lineDraw(){
+            const path = document.querySelector('.line-animated path');
+            let length = path.getTotalLength();
+
+            path.style.transition = path.style.WebkitTransition = 'none';
+            path.style.strokeDasharray = length + ' ' + length;
+            path.style.strokeDashoffset = length;
+
+            path.getBoundingClientRect();
+
+            path.style.transition = path.style.WebkitTransition =
+              'stroke-dashoffset 7s ease-in-out';
+            path.style.strokeDashoffset = '0';
+            };
+        </script>
+
+	</body>
+</html>
